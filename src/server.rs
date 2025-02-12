@@ -98,6 +98,7 @@ impl RustMirService for MyRustMirService {
             }
         }
         let response = ListFilesResponse { filenames };
+        println!("response: {:?}", response);
         Ok(Response::new(response))
     }
 
@@ -164,6 +165,8 @@ impl RustMirService for MyRustMirService {
             output: String::from_utf8_lossy(&output.stdout).to_string(),
             error: String::from_utf8_lossy(&output.stderr).to_string(),
         };
+
+        println!("response: {:?}", response);
 
         Ok(Response::new(response))
     }
