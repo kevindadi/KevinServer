@@ -52,8 +52,8 @@ struct FileContentResponse {
 }
 
 async fn get_mir(rust_source: web::Json<RustSourceRequest>) -> impl Responder {
-    let source_code = rust_source.source_code.clone();
-
+    let source_code = rust_source.into_inner().source_code.clone();
+    log::info!("source_code: {}", source_code);
     // Create a temporary directory
     let temp_dir = match TempDir::new() {
         Ok(dir) => dir,
@@ -224,6 +224,7 @@ async fn main() -> std::io::Result<()> {
                     .allow_any_origin()
                     .allow_any_method()
                     .allow_any_header()
+                    .max_age(3600),
             )
     })
         .bind("0.0.0.0:8080")?
