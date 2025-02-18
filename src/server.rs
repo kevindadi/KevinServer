@@ -52,8 +52,8 @@ struct FileContentResponse {
 }
 
 async fn get_mir(rust_source: web::Json<RustSourceRequest>) -> impl Responder {
+    println!("rust_source: {:?}", rust_source);
     let source_code = rust_source.into_inner().source_code.clone();
-    log::info!("source_code: {}", source_code);
     // Create a temporary directory
     let temp_dir = match TempDir::new() {
         Ok(dir) => dir,
@@ -127,6 +127,8 @@ async fn save_source_code(source_code: String) -> Result<PathBuf, String> {
 async fn run_pn_analysis(req: web::Json<PnAnalysisRequest>) -> impl Responder {
     let source_code = req.source_code.clone();
     let mode = req.mode.clone();
+
+    println!("req: {:?}", req);
 
     // 1. Save source code to temporary directory
     let tmp_dir = match save_source_code(source_code).await {
