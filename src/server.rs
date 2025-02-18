@@ -215,10 +215,6 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         App::new()
-            .route("/get_mir", web::post().to(get_mir))
-            .route("/list_files", web::post().to(list_files))
-            .route("/run_pn_analysis", web::post().to(run_pn_analysis))
-            .route("/get_file_content", web::post().to(get_file_content))
             .wrap(
                 Cors::default()
                     .allow_any_origin()
@@ -226,6 +222,11 @@ async fn main() -> std::io::Result<()> {
                     .allow_any_header()
                     .max_age(3600),
             )
+            .route("/get_mir", web::post().to(get_mir))
+            .route("/list_files", web::post().to(list_files))
+            .route("/run_pn_analysis", web::post().to(run_pn_analysis))
+            .route("/get_file_content", web::post().to(get_file_content))
+
     })
         .bind("0.0.0.0:8080")?
         .run()
