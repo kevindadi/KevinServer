@@ -5,6 +5,7 @@ use std::io::Write;
 use std::path::PathBuf;
 use std::process::Command;
 use tempfile::TempDir;
+use actix_cors::Cors;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct RustSourceRequest {
@@ -218,6 +219,12 @@ async fn main() -> std::io::Result<()> {
             .route("/list_files", web::post().to(list_files))
             .route("/run_pn_analysis", web::post().to(run_pn_analysis))
             .route("/get_file_content", web::post().to(get_file_content))
+            .wrap(
+                Cors::default()
+                    .allow_any_origin()
+                    .allow_any_method()
+                    .allow_any_header()
+            )
     })
         .bind("0.0.0.0:8080")?
         .run()
